@@ -7,9 +7,9 @@ import re
 API_ID = "24196359"
 API_HASH = "20a1b32381ed174799e8af8def3e176b"
 BOT_TOKEN = ""
-CHANNEL_ID = ""  # The channel where photos are posted
-GROUP_ID =   # Replace with your group chat ID (use negative for supergroups)
-MONGO_URI = ""  # Your MongoDB URI
+CHANNEL_ID = "-1002959465580"  # The channel where photos are posted
+GROUP_ID = -4705647498  # Replace with your group chat ID (use negative for supergroups)
+MONGO_URI = "mongodb+srv://MovieClub:MovieClub@cluster0.dau2bnj.mongodb.net/MovieClub?retryWrites=true&w=majority&appName=Cluster0"  # Your MongoDB URI
 
 app = Client("hubcloud_bot", api_id=API_ID, api_hash=API_HASH, bot_token=BOT_TOKEN)
 
