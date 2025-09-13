@@ -18,5 +18,8 @@ RUN apt-get update && \
 # Copy bot code
 COPY . .
 
-# Run bot
-CMD ["python", "bot.py"]
+# Expose the port for Render
+EXPOSE 8080
+
+# Run the app (bot + web server)
+CMD ["python", "app.py"]
