@@ -17,7 +17,21 @@ MONGO_URI = "mongodb+srv://MovieClub:MovieClub@cluster0.dau2bnj.mongodb.net/Movi
 # ===== BOT INSTANCE =====
 client = Client("ott_scraper_bot", api_id=API_ID, api_hash=API_HASH, bot_token=BOT_TOKEN)
 
-# ===== INLINE BUTTON =====
+# ===== INLINE BUTTONS =====
+start_buttons = InlineKeyboardMarkup(
+    [
+        [InlineKeyboardButton("📢 Channel", url="https://t.me/RDX_PVT_LTD")],
+        [
+            InlineKeyboardButton("📚 Help Commands", callback_data="help"),
+            InlineKeyboardButton("ℹ️ About", callback_data="about")
+        ],
+        [
+            InlineKeyboardButton("📩 Contact Us", url="https://t.me/YourUsername"),
+            InlineKeyboardButton("💰 Donate Us", url="https://your.donate.link")
+        ]
+    ]
+)
+
 update_button = InlineKeyboardMarkup(
     [[InlineKeyboardButton("Updates", url="https://t.me/RDX_PVT_LTD")]]
 )
@@ -26,6 +40,43 @@ update_button = InlineKeyboardMarkup(
 db_client = MongoClient(MONGO_URI)
 db = db_client.poster_bot
 posters_collection = db.posters
+
+# ===== START COMMAND =====
+@client.on_message(filters.command("start"))
+async def start_cmd(client, message):
+    await message.reply_photo(
+        photo="https://telegra.ph/file/7e8c1d9a0d8c2278f5a34.jpg",  # replace with your banner
+        caption="🌹 Hey, I'm A Poster Bot Specially Coded For RDX PVT LTD",
+        reply_markup=start_buttons
+    )
+
+# ===== CALLBACK HANDLER =====
+@client.on_callback_query()
+async def callback_handler(client, query):
+    if query.data == "help":
+        await query.message.edit_caption(
+            "📚 **Help Commands**\n\n"
+            "`/start` - Start the bot\n"
+            "`/p <poster name>` - Fetch saved posters\n"
+            "`/listposters` - List all saved posters\n"
+            "`/sunnext <url>` - Scrape Sunnext OTT\n"
+            "`/airtel <url>` - Scrape Airtel OTT\n"
+            "`/zee <url>` - Scrape Zee OTT\n"
+            "`/prime <url>` - Scrape Prime OTT\n\n"
+            "⚡ More commands coming soon...",
+            reply_markup=query.message.reply_markup
+        )
+
+    elif query.data == "about":
+        await query.message.edit_caption(
+            "ℹ️ **About This Bot**\n\n"
+            "🚀 I'm A Powerful Bypasser & File Tool Bot.\n"
+            "✅ Maintained By DD Botz Team.\n"
+            "⚡ Powered With Pyrogram.\n\n"
+            "👨‍💻 Developer: @RDX1444\n"
+            "📢 Updates: @RDX_PVT_LTD",
+            reply_markup=query.message.reply_markup
+        )
 
 # ===== AUTOMATIC POSTER SAVE IN CHANNEL =====
 @client.on_message(filters.photo & filters.chat(CHANNEL_ID))
@@ -160,13 +211,11 @@ async def prime_cmd(client, message: Message):
     api_url = f"https://primevideo.pbx1bots.workers.dev/?url={ott_url}"
     await handle_ott_command(message, api_url)
 
-# Powered by @RDX_PVT_LTD
+# ===== RUN BOT =====
 print("Bot is running...")
 client.run()
 
-
-
-
+# ===== KEEP ALIVE (For Render/Heroku) =====
 async def handle(request):
     return web.Response(text="Bot is running!")
 
