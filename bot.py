@@ -7,7 +7,7 @@ import re
 # ===== CONFIG =====
 API_ID = "24196359"
 API_HASH = "20a1b32381ed174799e8af8def3e176b"
-BOT_TOKEN = ""
+BOT_TOKEN = "8310604285:AAG6xP6fpB7YL9FlpTY5gzN3ZRXqkXoPFrI"
 CHANNEL_ID = "-1002959465580"
 GROUP_ID = -4705647498  # Your group ID
 MONGO_URI = "mongodb+srv://MovieClub:MovieClub@cluster0.dau2bnj.mongodb.net/MovieClub?retryWrites=true&w=majority&appName=Cluster0"
