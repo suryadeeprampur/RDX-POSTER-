@@ -1,0 +1,16 @@
+services:
+  - type: worker
+    name: telegram-bot
+    env: docker
+    plan: free
+    autoDeploy: true
+    envVars:
+      - key: API_ID
+        sync: false
+      - key: API_HASH
+        sync: false
+      - key: BOT_TOKEN
+        sync: false
+      - key: MONGO_DB_URI
+        sync: false
+    startCommand: "python bot.py"
