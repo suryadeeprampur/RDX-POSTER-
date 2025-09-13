@@ -12,7 +12,8 @@ CHANNEL_ID = "-1002959465580"
 GROUP_ID = -4705647498  # Your group ID
 MONGO_URI = "mongodb+srv://MovieClub:MovieClub@cluster0.dau2bnj.mongodb.net/MovieClub?retryWrites=true&w=majority&appName=Cluster0"
 
-app = Client("ott_scraper_bot", api_id=API_ID, api_hash=API_HASH, bot_token=BOT_TOKEN)
+# ===== BOT INSTANCE =====
+client = Client("ott_scraper_bot", api_id=API_ID, api_hash=API_HASH, bot_token=BOT_TOKEN)
 
 # ===== INLINE BUTTON =====
 update_button = InlineKeyboardMarkup(
@@ -25,7 +26,7 @@ db = db_client.poster_bot
 posters_collection = db.posters
 
 # ===== AUTOMATIC POSTER SAVE IN CHANNEL =====
-@app.on_message(filters.photo & filters.chat(CHANNEL_ID))
+@client.on_message(filters.photo & filters.chat(CHANNEL_ID))
 async def auto_save_poster(client, message: Message):
     try:
         if not message.caption:
@@ -55,7 +56,7 @@ async def auto_save_poster(client, message: Message):
         print(f"Error saving poster: {str(e)}")
 
 # ===== RETRIEVE POSTER WITH /p COMMAND IN GROUP ONLY =====
-@app.on_message(filters.command("p") & filters.chat(GROUP_ID))
+@client.on_message(filters.command("p") & filters.chat(GROUP_ID))
 async def get_poster(client, message: Message):
     try:
         args = message.text.split(maxsplit=1)
@@ -77,7 +78,7 @@ async def get_poster(client, message: Message):
         await message.reply_text(f"Error: {str(e)}")
 
 # ===== LIST ALL POSTERS WITH /listposters IN GROUP ONLY =====
-@app.on_message(filters.command("listposters") & filters.chat(GROUP_ID))
+@client.on_message(filters.command("listposters") & filters.chat(GROUP_ID))
 async def list_posters(client, message: Message):
     posters = posters_collection.find()
     names = [poster["name"] for poster in posters]
@@ -104,9 +105,6 @@ async def handle_ott_command(message: Message, api_url: str):
 
         title = data.get("title") or "No Title"
         image_url = data.get("poster") or data.get("landscape")
-
-        if not title and not image_url:
-            return await msg.edit_text("No title or poster found for this URL.")
 
         text = (
             f"<b>{title}</b>\n\n"
@@ -162,4 +160,4 @@ async def prime_cmd(client, message: Message):
 
 # Powered by @RDX_PVT_LTD
 print("Bot is running...")
-app.run()
+client.run()
